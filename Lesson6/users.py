@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ETree
 import pprint
 
 """
@@ -11,6 +11,7 @@ have contributed to the map in this particular area!
 The function process_map should return a set of unique user IDs ("uid")
 """
 
+
 def get_user(element):
     if 'uid' in element.attrib:
         return element.attrib['uid']
@@ -19,7 +20,7 @@ def get_user(element):
 
 def process_map(filename):
     users = set()
-    for _, element in ET.iterparse(filename):
+    for _, element in ETree.iterparse(filename):
         if element.tag in ['node', 'way', 'relation']:
             uid = get_user(element)
             if uid is not None:
@@ -28,12 +29,13 @@ def process_map(filename):
     return users
 
 
-def test():
+def test(filename='example.osm'):
 
-    users = process_map('example.osm')
+    users = process_map(filename)
     pprint.pprint(users)
-    assert len(users) == 6
 
+    if filename == 'example.osm':
+        assert len(users) == 6
 
 
 if __name__ == "__main__":

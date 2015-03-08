@@ -161,12 +161,12 @@ def process_map(file_in, pretty=False):
     return data
 
 
-def test():
+def test(filename='example.som'):
     # NOTE: if you are running this code on your computer, with a larger
-    # dataset, call the process_map procedure with pretty=False. The pretty=True
-    # option adds additional spaces to the output, making it significantly
-    # larger.
-    data = process_map('example.osm', True)
+    # data set, call the process_map procedure with pretty=False.
+    # The pretty=True option adds additional spaces to the output, making it
+    # significantly larger.
+    data = process_map(filename, True)
     # pprint.pprint(data)
 
     correct_first_elem = {
