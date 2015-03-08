@@ -15,6 +15,7 @@ def get_db(db_name):
     db = client[db_name]
     return db
 
+
 def check_type(val):
 
     try:
@@ -111,6 +112,7 @@ def process_map(file_in):
     data = []
     problems = []
     ctags = 0
+    pos = [0, 0]
     attribtypes = {}
 
     with codecs.open(file_out, "w") as fo:
@@ -130,7 +132,7 @@ def process_map(file_in):
                 if event == 'end':
                     element.clear()
 
-            if started:
+            elif started:
                 if event == 'end' and element.tag in ['node', 'way']:
                     doc['pos'] = pos
                     doc['type'] = element.tag
@@ -155,6 +157,7 @@ def process_map(file_in):
 
 
 def count_tags(filename):
+
     osm_file = open(filename, 'r')
     tags = {}
     levels = {}
