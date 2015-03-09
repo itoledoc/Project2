@@ -1,14 +1,9 @@
-# Project2 of the Data Analyst Nanodegree
+# Project 2 of the Data Analyst Nanodegree
 
 ## OpenStreetMap data wrangling with MongoDB
 
 This is the github repository for Ignacio Toledo's work for the
 second project in the Data Analyst Degree.
-
-**As today (March 8th, 2015) this repository contains the partial project,**
-**which will be complete by the end of March 9th, and the full (completed)**
-**Lesson 6 exercises.**
-
 
 ### Repository structure
 
@@ -16,15 +11,26 @@ second project in the Data Analyst Degree.
   Lesson 6 execercies of the [Data Wrangling with MongoDb class][1]
   
 * [proj2.ipynb](../master/proj2.ipynb): IPython notebook
-  docummenting some of the details of the work done for this
+  documenting some of the details of the work done for this
   project
   
 * [osm_to_json.py](../master/osm_to_json.py): python file
   with functions related mainly to the task of parsing an xml file
   and rendering into a json file.
   
+* [osm_to_json.py](../master/osm_to_json2.py): a copy of the `osm_to_json.py` file,
+  but with extra functions to fix some of the issues found.
+  
 * [OpenStreetMapdatawranglingwithMongoDb.pdf][2]: The Project 2 report, in PDF
   format.
+  
+* [Link to the selected openstreetmaparea][3]: The text file with the link to
+  the openstreetmap area used for project 2.
+  
+* [OSM compressed file][4]: The whole OSM file used in the Project 2 work.
+
 
 [1]: https://www.udacity.com/course/progress#!/c-ud032-nd
 [2]: ../master/OpenStreetMapdatawranglingwithMongoDb.pdf
+[3]: ../master/link_to_osm.txt
+[4]: ../master/santiago_xml.tar.gz
