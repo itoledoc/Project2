@@ -23,8 +23,8 @@ second project in the Data Analyst Degree.
   with functions related mainly to the task of parsing an xml file
   and rendering into a json file.
   
-* [OpenStreetMapdatawranglingwithMongoDb.pdf][2]: The PDF with the report for 
-  Project 2.
+* [OpenStreetMapdatawranglingwithMongoDb.pdf][2]: The Project 2 report, in PDF
+  format.
 
 [1]: https://www.udacity.com/course/progress#!/c-ud032-nd
 [2]: ../master/OpenStreetMapdatawranglingwithMongoDb.pdf
