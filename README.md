@@ -5,6 +5,11 @@
 This is the github repository for Ignacio Toledo's work for the
 second project in the Data Analyst Degree.
 
+**As today (March 8th, 2015) this repository contains the partial project,**
+**which will be complete by the end of March 9th, and the full (completed)**
+**Lesson 6 exercises.**
+
+
 ### Repository structure
 
 * [Lesson6](../master/Lesson6): contains the files related to
@@ -18,8 +23,8 @@ second project in the Data Analyst Degree.
   with functions related mainly to the task of parsing an xml file
   and rendering into a json file.
   
-  
-  
- 
+* [OpenStreetMapdatawranglingwithMongoDb.pdf][2]: The PDF with the report for 
+  Project 2.
 
 [1]: https://www.udacity.com/course/progress#!/c-ud032-nd
+[2]: ../master/OpenStreetMapdatawranglingwithMongoDb.pdf
