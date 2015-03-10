@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+This python set of functions help to parse, check, reshape and write into a JSON
+file an OSM data file.
 
+"""
 import xml.etree.ElementTree as ETree
 import re
 import codecs
@@ -10,6 +14,14 @@ CREATED = ["version", "changeset", "timestamp", "user", "uid"]
 
 
 def get_db(db_name):
+    """
+    Function to connect to a mongodb server started at the local host, and
+    return a pointer to a particular database.
+    The code is based on one of the examples of the Data Wrangling class.
+
+    :param db_name: string, name of the database the user wants to connect
+    :return: pymongo database.Database instance
+    """
     from pymongo import MongoClient
     client = MongoClient('localhost:27017')
     db = client[db_name]
@@ -17,6 +29,12 @@ def get_db(db_name):
 
 
 def check_type(val):
+    """
+    Check the python type of a variable.
+
+    :param val: the variable to check
+    :return: the python type
+    """
 
     try:
         a = float(val)
@@ -39,11 +57,23 @@ def check_type(val):
     return type(val)
 
 
-def shape_element(key, value, document, position, prob_tag, tag, attribtypes):
+def shape_element(key, value, document, position, prob_tag, tag, attrib_types):
+    """
+    Builds fields to insert into JSON documents
+
+    :param key:
+    :param value:
+    :param document:
+    :param position:
+    :param prob_tag:
+    :param tag:
+    :param attrib_types:
+    :return:
+    """
 
     lower = re.compile(r'^([a-z]|_)*$')
     lower_colon = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
-    problemchars = re.compile(r'[=\+/&<>;\'"`\?%#$@\,\. \t\r\n]')
+    problem_chars = re.compile(r'[=\+/&<>;\'"`\?%#$@\,\. \t\r\n]')
 
     if tag in ['node', 'way']:
         if key in CREATED:
@@ -59,18 +89,18 @@ def shape_element(key, value, document, position, prob_tag, tag, attribtypes):
             document[key] = value
 
         t = check_type(value)
-        if key in attribtypes.keys():
-            attribtypes[key][0].add(t)
-            attribtypes[key][1] += 1
+        if key in attrib_types.keys():
+            attrib_types[key][0].add(t)
+            attrib_types[key][1] += 1
         else:
-            attribtypes[key] = [set(), 0]
-            attribtypes[key][0].add(t)
-            attribtypes[key][1] += 1
+            attrib_types[key] = [set(), 0]
+            attrib_types[key][0].add(t)
+            attrib_types[key][1] += 1
 
-        return document, position, prob_tag, attribtypes
+        return document, position, prob_tag, attrib_types
 
     elif tag == 'tag':
-        if problemchars.search(key):
+        if problem_chars.search(key):
             prob_tag.append(key)
         elif len(key.split(':')) == 3:
             prob_tag.append(key)
@@ -89,13 +119,13 @@ def shape_element(key, value, document, position, prob_tag, tag, attribtypes):
 
         if key not in prob_tag:
             t = check_type(value)
-            if key in attribtypes.keys():
-                attribtypes[key][0].add(t)
-                attribtypes[key][1] += 1
+            if key in attrib_types.keys():
+                attrib_types[key][0].add(t)
+                attrib_types[key][1] += 1
             else:
-                attribtypes[key] = [set(), 0]
-                attribtypes[key][0].add(t)
-                attribtypes[key][1] += 1
+                attrib_types[key] = [set(), 0]
+                attrib_types[key][0].add(t)
+                attrib_types[key][1] += 1
 
     elif tag == 'nd':
         if 'node_refs' in document.keys():
@@ -103,10 +133,24 @@ def shape_element(key, value, document, position, prob_tag, tag, attribtypes):
         else:
             document['node_refs'] = [value]
 
-    return document, position, prob_tag, attribtypes
+    return document, position, prob_tag, attrib_types
 
 
 def process_map(file_in):
+    """
+    Converts an OSM file into a JSON valid to be ingested by mongodb
+    The process includes:
+    - Parse the xml files
+    - Read the 'node' and 'way' elements (which are two of the three OSM' data
+      primitives)
+    - Build a document for each element, include its attributes, the variables
+      related to the creation of the element, plus the child elements wich are
+      either 'tags' or 'nd'.
+    - Store the documents in a python list and write them in a JSON file.
+
+    :param file_in:
+    :return:
+    """
     file_out = "{0}.json".format(file_in)
     osm_file = codecs.open(file_in, 'r')
     data = []
@@ -157,6 +201,11 @@ def process_map(file_in):
 
 
 def count_tags(filename):
+    """
+
+    :param filename:
+    :return:
+    """
 
     osm_file = open(filename, 'r')
     tags = {}
@@ -183,11 +232,14 @@ def count_tags(filename):
 
 
 def check_struct(filename):
+    """
+
+    :param filename:
+    :return:
+    """
     osm_file = open(filename, 'r')
     structures = []
     problems = []
-    street_names = set()
-    tags1 = []
 
     lower = re.compile(r'^([a-z]|_)*$')
     lower_colon = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
@@ -205,7 +257,6 @@ def check_struct(filename):
                 started = True
                 groups = []
                 dicto = {}
-                typ = elem.tag
 
             elif event == 'end':
                 elem.clear()
@@ -231,16 +282,11 @@ def check_struct(filename):
                             problems.append(atr[a])
                         elif lower.search(atr[a]) or lower_colon.search(atr[a]):
                             groups.append(atr[a])
-                            tags1.append(atr[a])
                             dicto[atr[a]] = atr['v']
                         else:
                             problems.append(atr[a])
 
-                if 'highway' in dicto.keys() and typ == 'way':
-                    if 'name' in dicto.keys():
-                        street_names.add(dicto['name'])
-
             else:
                 elem.clear()
     print count, c2
-    return structures, problems, street_names, tags1
+    return structures, problems
