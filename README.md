@@ -8,7 +8,7 @@ second project in the Data Analyst Degree.
 ### Repository structure
 
 * [Lesson6](../master/Lesson6): contains the files related to
-  Lesson 6 execercies of the [Data Wrangling with MongoDb class][1]
+  Lesson 6 exercises of the [Data Wrangling with MongoDb class][1]
     
 * [osm_to_json.py](../master/osm_to_json.py): python file
   with functions related mainly to the task of parsing an xml file
