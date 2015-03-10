@@ -170,3 +170,92 @@ def correct_name(name):
             return name.replace(k, v)
 
     return name
+
+
+# Functions to fix phone numbers with pymongo.
+def correct_phone_dict(collection):
+
+    phone = []
+    cursor = collection.find(
+        {'$or': [{'phone': {'$exists': 1}},
+                 {'contact:phone': {'$exists': 1}}]},
+        {'_id': 0, 'phone': 1, 'contact:phone': 1})
+    for c in cursor:
+        phone.append(c.values()[0])
+
+    correct = {}
+    nofix = 0
+    problemc = re.compile(r'\D')
+    for p in phone:
+        ptemp = p.split(';')
+        fix = False
+        for i in range(len(ptemp)):
+            ptemp[i] = ptemp[i].replace(' ','').replace('(','').replace(')','').replace('-','').replace('+','')
+            if problemc.search(ptemp[i]):
+                correct[p] = 'FIXME'
+                fix = True
+                break
+            if len(ptemp[i]) > 11:
+                correct[p] = 'FIXME'
+                fix = True
+                break
+            if len(ptemp[i]) == 11  and ptemp[i].startswith('5622'):
+                ptemp[i] = "+56 2 2" + ptemp[i][4:]
+                nofix += 1
+                continue
+            if len(ptemp[i]) == 10  and ptemp[i].startswith('562'):
+                ptemp[i] = "+56 2 2" + ptemp[i][3:]
+                continue
+            if len(ptemp[i]) == 11  and ptemp[i].startswith('5602'):
+                ptemp[i] = "+56 2 2" + ptemp[i][4:]
+                continue
+            if len(ptemp[i]) == 12  and ptemp[i].startswith('56022'):
+                ptemp[i] = "+56 2 2" + ptemp[i][5:]
+                continue
+            if len(ptemp[i]) == 11  and ptemp[i].startswith('569'):
+                ptemp[i] = "+56 9" + ptemp[i][3] + ' ' + ptemp[i][4:]
+                continue
+            if len(ptemp[i]) == 9 and ptemp[i].startswith('02'):
+                ptemp[i] = "+56 2 2" + ptemp[i][2:]
+                continue
+            if len(ptemp[i]) == 10 and ptemp[i].startswith('022'):
+                ptemp[i] = "+56 2 2" + ptemp[i][3:]
+                continue
+            if len(ptemp[i]) == 8 and ptemp[i].startswith('2'):
+                ptemp[i] = "+56 2 2" + ptemp[i][1:]
+                continue
+            if len(ptemp[i]) == 9 and ptemp[i].startswith('22'):
+                ptemp[i] = "+56 2 2" + ptemp[i][2:]
+                continue
+
+            if len(ptemp[i]) == 7:
+                ptemp[i] = "+56 2 2" + ptemp[i]
+                continue
+
+            if len(ptemp[i]) == 10 and (ptemp[i].startswith('800') or ptemp[i].startswith('600')):
+                ptemp[i] = ptemp[i][0:3] + ' ' + ptemp[i][3:6] + ' ' + ptemp[i][6:]
+                continue
+
+            correct[p] = 'FIXME'
+            fix = True
+            break
+
+        if fix:
+            continue
+        if len(ptemp) == 1:
+            ptemp = ptemp[0]
+
+        correct[p] = ptemp
+
+
+def do_correct_phone(collection, phone_dict):
+
+    for k, v in phone_dict.iteritems():
+        collection.update(
+            {'contact:phone': k},
+            {'$set': {'contact:phone': v}},
+            multi=True)
+        collection.update(
+            {'phone': k},
+            {'$set': {'phone': v}},
+            multi=True)
