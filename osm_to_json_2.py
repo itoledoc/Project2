@@ -153,7 +153,7 @@ def process_map(file_in):
 
     return data
 
-
+# Functions and variables to fix streets
 CORRECT = {'Avda': 'Avenida',
            'Avda.': 'Avenida',
            'Av': 'Avenida',
