@@ -70,8 +70,10 @@ Validity
     * The `Number` should consist in an 8 digit number always starting with a 2
       for residential lines; if a cell phone, the number should have 7 digits.
 
+  Only 129 phone numbers (of 993) are in the correct formatting.
+
   **This problem is resolved by doing a query with pymongo, and then using the**
-  **`update` procedures**
+  **`update` procedures**. The functions needed are at the end of the `osm_to_json2.py` file.
 
 * E-mail address with no valid domain or plainly invalid (forbidden characters or
   missing @). Examples:
@@ -209,3 +211,53 @@ OpenStreetMap page. There is some work already done there, which aims mainly to
 use a consistent set of tags and values to give consistency and uniformity to
 chilean map features, but is still clearly incomplete and kind of dead, since
 no modifications have been done in the last year.
+
+
+Additional data exploration using MongoDB queries
+-------------------------------------------------
+
+Number of schools in Santiago
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: none
+
+   > db.santiago.find({'amenity':'school'}).count()
+   2550
+
+Number of police stations in Santiago
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: none
+
+   > db.santiago.find({'amenity':'police'}).count()
+   72
+
+Number of highways (streets) without name
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: none
+
+   > db.santiago.find({highway:{$exists:1}, type:'way', name:''}).count()
+   47
+
+The 10 districts with the higher number of bus stops
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: none
+
+   > db.santiago.aggregate(
+       {$match: {type: 'node', highway:'bus_stop'}},
+       {$group: {'_id': '$is_in:city', 'count': {$sum:1}}},
+       {$sort: {'count':-1}},
+       {$limit:10})
+
+    { "_id" : "Puente Alto", "count" : 800 }
+    { "_id" : "Maipú", "count" : 746 }
+    { "_id" : "La Florida", "count" : 668 }
+    { "_id" : "Santiago", "count" : 620 }
+    { "_id" : "San Bernardo", "count" : 476 }
+    { "_id" : "Pudahuel", "count" : 416 }
+    { "_id" : "Las Condes", "count" : 408 }
+    { "_id" : "Ñuñoa", "count" : 362 }
+    { "_id" : "La Pintana", "count" : 353 }
+    { "_id" : "Peñalolén", "count" : 352 }

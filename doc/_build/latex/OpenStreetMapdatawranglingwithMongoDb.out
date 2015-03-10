@@ -12,3 +12,8 @@
 \BOOKMARK [2][-]{subsection.3.4}{Number of ways}{section.3}% 12
 \BOOKMARK [2][-]{subsection.3.5}{Number of unique users and top 10 users}{section.3}% 13
 \BOOKMARK [1][-]{section.4}{Additional Ideas about the data set}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Additional data exploration using MongoDB queries}{section.4}% 15
+\BOOKMARK [3][-]{subsubsection*.2}{Number of schools in Santiago}{subsection.4.1}% 16
+\BOOKMARK [3][-]{subsubsection*.3}{Number of police stations in Santiago}{subsection.4.1}% 17
+\BOOKMARK [3][-]{subsubsection*.4}{Number of highways \(streets\) without name}{subsection.4.1}% 18
+\BOOKMARK [3][-]{subsubsection*.5}{The 10 districts with the higher number of bus stops}{subsection.4.1}% 19

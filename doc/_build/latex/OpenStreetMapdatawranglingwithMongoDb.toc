@@ -4,7 +4,7 @@
 \contentsline {subsection}{\numberline {2.1}Problems related to the parsing of the data}{2}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Problems related to the data audition}{2}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Validity}{2}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Completeness}{2}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.4}Completeness}{3}{subsection.2.4}
 \contentsline {subsection}{\numberline {2.5}Consistency}{3}{subsection.2.5}
 \contentsline {section}{\numberline {3}Overview of the data}{3}{section.3}
 \contentsline {subsection}{\numberline {3.1}File size:}{3}{subsection.3.1}
@@ -13,3 +13,8 @@
 \contentsline {subsection}{\numberline {3.4}Number of ways}{3}{subsection.3.4}
 \contentsline {subsection}{\numberline {3.5}Number of unique users and top 10 users}{3}{subsection.3.5}
 \contentsline {section}{\numberline {4}Additional Ideas about the data set}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}Additional data exploration using MongoDB queries}{4}{subsection.4.1}
+\contentsline {subsubsection}{Number of schools in Santiago}{4}{subsubsection*.2}
+\contentsline {subsubsection}{Number of police stations in Santiago}{4}{subsubsection*.3}
+\contentsline {subsubsection}{Number of highways (streets) without name}{4}{subsubsection*.4}
+\contentsline {subsubsection}{The 10 districts with the higher number of bus stops}{4}{subsubsection*.5}

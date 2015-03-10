@@ -14,7 +14,7 @@
 
 
 \title{OpenStreetMap data wrangling with MongoDb Documentation}
-\date{March 09, 2015}
+\date{March 10, 2015}
 \release{}
 \author{Ignacio Toledo}
 \newcommand{\sphinxlogo}{}
@@ -214,8 +214,10 @@ for residential lines; if a cell phone, the number should have 7 digits.
 
 \end{itemize}
 
+Only 129 phone numbers (of 993) are in the correct formatting.
+
 \textbf{This problem is resolved by doing a query with pymongo, and then using the}
-\textbf{{}`update{}` procedures}
+\textbf{{}`update{}` procedures}. The functions needed are at the end of the \emph{osm\_to\_json2.py} file.
 
 \item {} 
 E-mail address with no valid domain or plainly invalid (forbidden characters or
@@ -357,6 +359,55 @@ OpenStreetMap page. There is some work already done there, which aims mainly to
 use a consistent set of tags and values to give consistency and uniformity to
 chilean map features, but is still clearly incomplete and kind of dead, since
 no modifications have been done in the last year.
+
+
+\subsection{Additional data exploration using MongoDB queries}
+\label{index:additional-data-exploration-using-mongodb-queries}
+
+\subsubsection{Number of schools in Santiago}
+\label{index:number-of-schools-in-santiago}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} db.santiago.find(\PYGZob{}\PYGZsq{}amenity\PYGZsq{}:\PYGZsq{}school\PYGZsq{}\PYGZcb{}).count()
+2550
+\end{Verbatim}
+
+
+\subsubsection{Number of police stations in Santiago}
+\label{index:number-of-police-stations-in-santiago}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} db.santiago.find(\PYGZob{}\PYGZsq{}amenity\PYGZsq{}:\PYGZsq{}police\PYGZsq{}\PYGZcb{}).count()
+72
+\end{Verbatim}
+
+
+\subsubsection{Number of highways (streets) without name}
+\label{index:number-of-highways-streets-without-name}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} db.santiago.find(\PYGZob{}highway:\PYGZob{}\PYGZdl{}exists:1\PYGZcb{}, type:\PYGZsq{}way\PYGZsq{}, name:\PYGZsq{}\PYGZsq{}\PYGZcb{}).count()
+47
+\end{Verbatim}
+
+
+\subsubsection{The 10 districts with the higher number of bus stops}
+\label{index:the-10-districts-with-the-higher-number-of-bus-stops}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYGZgt{} db.santiago.aggregate(
+    \PYGZob{}\PYGZdl{}match: \PYGZob{}type: \PYGZsq{}node\PYGZsq{}, highway:\PYGZsq{}bus\PYGZus{}stop\PYGZsq{}\PYGZcb{}\PYGZcb{},
+    \PYGZob{}\PYGZdl{}group: \PYGZob{}\PYGZsq{}\PYGZus{}id\PYGZsq{}: \PYGZsq{}\PYGZdl{}is\PYGZus{}in:city\PYGZsq{}, \PYGZsq{}count\PYGZsq{}: \PYGZob{}\PYGZdl{}sum:1\PYGZcb{}\PYGZcb{}\PYGZcb{},
+    \PYGZob{}\PYGZdl{}sort: \PYGZob{}\PYGZsq{}count\PYGZsq{}:\PYGZhy{}1\PYGZcb{}\PYGZcb{},
+    \PYGZob{}\PYGZdl{}limit:10\PYGZcb{})
+
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Puente Alto\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 800 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Maipú\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 746 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}La Florida\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 668 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Santiago\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 620 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}San Bernardo\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 476 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Pudahuel\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 416 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Las Condes\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 408 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Ñuñoa\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 362 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}La Pintana\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 353 \PYGZcb{}
+ \PYGZob{} \PYGZdq{}\PYGZus{}id\PYGZdq{} : \PYGZdq{}Peñalolén\PYGZdq{}, \PYGZdq{}count\PYGZdq{} : 352 \PYGZcb{}
+\end{Verbatim}
 
 
 
