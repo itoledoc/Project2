@@ -1,1 +1,6 @@
 http://www.openstreetmap.org/#map=11/-33.5154/-70.3722
+
+This area correspond to the city of Santiago de Chile. The area was selected
+mainly because this is the city were I live, and it looked like an area
+were I would expect a lot of problems to appear, given the low activity in the
+local community regarding collaboration in wikis, or open data sets.
