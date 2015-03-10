@@ -9,11 +9,7 @@ second project in the Data Analyst Degree.
 
 * [Lesson6](../master/Lesson6): contains the files related to
   Lesson 6 execercies of the [Data Wrangling with MongoDb class][1]
-  
-* [proj2.ipynb](../master/proj2.ipynb): IPython notebook
-  documenting some of the details of the work done for this
-  project
-  
+    
 * [osm_to_json.py](../master/osm_to_json.py): python file
   with functions related mainly to the task of parsing an xml file
   and rendering into a json file.
@@ -29,6 +25,9 @@ second project in the Data Analyst Degree.
   
 * [OSM compressed file][4]: The whole OSM file used in the Project 2 work.
 
+* [proj2.ipynb](../master/proj2.ipynb): IPython notebook (very very drafty)
+  documenting some of the details of the work done for this
+  project
 
 [1]: https://www.udacity.com/course/progress#!/c-ud032-nd
 [2]: ../master/OpenStreetMapdatawranglingwithMongoDb.pdf
