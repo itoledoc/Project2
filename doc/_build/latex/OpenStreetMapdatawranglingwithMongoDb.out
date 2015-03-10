@@ -1,1 +1,14 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Problems encountered in our map area}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Problems related to the parsing of the data}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Problems related to the data audition}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Validity}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Completeness}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Consistency}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Overview of the data}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{File size:}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Number of documents}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.3}{Number of nodes}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.4}{Number of ways}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.5}{Number of unique users and top 10 users}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Additional Ideas about the data set}{}% 14
